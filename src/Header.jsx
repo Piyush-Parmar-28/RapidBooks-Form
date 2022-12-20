@@ -5,7 +5,7 @@ const Header = () => {
         <div className="d-flex flex-row m-2">
 
             <div className="col">
-                <input type="text" className="form-control" placeholder="Debit Amount" aria-label="Last name" disabled />
+                <input type="text" className="form-control" placeholder="Select Amount" aria-label="Last name" disabled />
             </div>
 
             <div className="col">

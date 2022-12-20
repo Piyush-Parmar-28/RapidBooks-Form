@@ -2,32 +2,67 @@ import React, { useState } from 'react'
 
 import Header from './Header'
 import FormInput from './FormInput'
+import AddBtn_total from './AddBtn_total'
 
 const App = (props) => {
 
-    var [formData, setFormData] = useState([{
-        account: "",
-        dAmount: 0,
-        cAmount: 0
-    }]);
+    var [formData, setFormData] = useState([
+        {
+            account: "",
+            dAmount: 0,
+            cAmount: 0
+        },
+        {
+            account: "",
+            dAmount: 0,
+            cAmount: 0
+        },
+        {
+            account: "",
+            dAmount: 0,
+            cAmount: 0
+        }
+    ]);
 
-    function handleChange(event) {
+    var [total2Value, setTotal2Value] = useState(0);
+    var [total3Value, setTotal3Value] = useState(0);
 
-        setFormData((prevValue) => {
+    function handleChange(event, itemIndex) {
+
+        console.log("event details: ");
+        console.log(event);
+
+        setFormData((Data) => {
+
+            Data[itemIndex] = {
+                ...Data[itemIndex], [event.target.name]: event.target.value
+            }
+
+            setFormData(Data)
+
             return (
-                [...prevValue,
-
-                {
-                    [event.target.name]: event.target.value
-                }
-                ]
+                Data
             )
         })
-
-        // setFormData({ ...formData, [event.target.name]: event.target.value })
-
-        console.log(formData);
+        calcTotal()
+        
     }
+
+    function calcTotal() {
+        var sum2= 0;
+        var sum3= 0;
+
+        formData.map((data) => {
+            sum2+= data.dAmount;
+            sum3+= data.cAmount;
+        })
+        setTotal2Value(sum2);
+        setTotal3Value(sum3);
+    }
+
+    console.log("Total Values: ");
+    console.log(total2Value);
+    console.log(total3Value);
 
     function addRow() {
         console.log("Inside addRow");
@@ -36,7 +71,6 @@ const App = (props) => {
         setFormData((prevValue) => {
             return (
                 [...prevValue,
-
                 {
                     account: "",
                     dAmount: 0,
@@ -45,20 +79,20 @@ const App = (props) => {
                 ]
             )
         })
-
-
     }
 
     console.log("after addition");
     console.log(formData);
 
-    function handleDelete(itemIndex) {
-        console.log(itemIndex);
 
-        setFormData((data) => {
+
+    function handleDelete(itemIndex) {
+        console.log("Index is: ");
+        console.log(itemIndex);
+        setFormData((Data) => {
             return (
-                data.filter((data, index) => {
-                    return index != itemIndex;
+                Data.filter((items, index) => {
+                    return index !== itemIndex;
                 }
                 )
             )
@@ -68,6 +102,14 @@ const App = (props) => {
         console.log(formData);
     }
 
+    function toRupees(data){
+        return Intl.NumberFormat("en-IN", {
+            style: "currency",
+            currency: "INR"
+        }).format(data)
+
+    }
+
     return (
         <main>
             <section className="extra-padding blue-bg">
@@ -75,7 +117,7 @@ const App = (props) => {
 
                     <form method="post" className="form-style">
 
-                        <div className="d-flex justify-content-between flex-wrap">
+                        <div>
 
                             <Header></Header>
 
@@ -83,22 +125,24 @@ const App = (props) => {
                                 formData.map((data, index) => {
                                     return (
                                         <FormInput
-                                            ID={index}
-                                            deleteFunction={handleDelete}
                                             key={index}
-                                            changeFunction={handleChange}
+                                            ID={index}
+                                            deleteFunction={() => { handleDelete(index) }}
+                                            changeFunction={(event) => { handleChange(event, index) }}
 
                                             accountValue={formData.account}
-                                            cValue={formData.cAmount}
-                                            dValue={formData.dAmount}
+                                            cValue={ ()=>{ toRupees(formData.cAmount )} }
+                                            dValue={ ()=>{ toRupees(formData.dAmount )} }
                                         />
                                     )
                                 })
                             }
 
-                            <div>
-                                <button type="button" className="btn btn-success" onClick={addRow}><i className="bi bi-plus"></i></button>
-                            </div>
+                            <AddBtn_total
+                                addRowFunc={addRow}
+                                total2={ ()=>{ toRupees(total2Value) } }
+                                total3={ ()=>{ toRupees(total3Value) } }
+                            />
 
                         </div>
 
