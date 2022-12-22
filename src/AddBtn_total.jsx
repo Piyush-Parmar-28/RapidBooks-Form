@@ -13,11 +13,11 @@ const AddBtn_total = (props) => {
             </div>
 
             <div className="col">
-                <input type="text" className="form-control" placeholder={props.total2} name="dAmount" aria-label="Last name" disabled/>
+                <input type="text" className="form-control" placeholder={props.totalDebit} name="dAmount" aria-label="Last name" disabled/>
             </div>
 
             <div className="col">
-                <input type="text" className="form-control" placeholder={props.total3} name="cAmount" aria-label="Last name" disabled/>
+                <input type="text" className="form-control" placeholder={props.totalCredit} name="cAmount" aria-label="Last name" disabled/>
             </div>
 
         </div>

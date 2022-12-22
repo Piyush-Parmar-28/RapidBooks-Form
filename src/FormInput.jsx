@@ -1,6 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
+import CurrencyInput from "react-currency-input-field";
 
 const FormInput = (props) => {
+
+    const [dValue, setDValue] = useState("0");
+    const [cValue, setCValue] = useState("0");
+
+    const handleDebitChange = (newValue) => {
+        if (newValue === undefined) {
+            setDValue("0");
+        } else {
+            setDValue(newValue);
+        }
+
+    };
+
+    const handleCreditChange = (newValue) => {
+        if (newValue === undefined) {
+            setCValue("0");
+        } else {
+            setCValue(newValue);
+        }
+    };
+
+    const debitHandler = (event) => {
+        var s = (event.target.value)
+        setDValue(parseFloat(s.substring(1)));
+        props.addDebitDataFunc("dAmount", parseFloat(s.substring(1)), props.Index);
+    }
+
+    const creditHandler = (event) => {
+        var s = (event.target.value)
+        setDValue(parseFloat(s.substring(1)));
+        props.addDebitDataFunc("cAmount", parseFloat(s.substring(1)), props.Index);
+    }
+
     return (
         <div className="d-flex flex-row m-2">
             <div className="col">
@@ -12,13 +46,33 @@ const FormInput = (props) => {
                 </select>
             </div>
 
-            <div className="col">
-                <input type="number" className="form-control" placeholder="Debit Amount" name="dAmount" aria-label="Last name" value={props.dValue} onChange={props.changeFunction} />
-            </div>
+            <CurrencyInput
+                intlConfig={{ locale: 'en-IN', currency: 'INR' }}
+                allowDecimals
+                placeholder="Debit"
+                decimalSeparator="."
+                id="input-currency-field"
+                name="dAmount"
+                prefix="₹"
+                onValueChange={handleDebitChange}
+                value={dValue}
+                onChange={debitHandler}
+                step={1}
+            />
 
-            <div className="col">
-                <input type="number" className="form-control" placeholder="Credit Amount" name="cAmount" aria-label="Last name" value={props.cValue} onChange={props.changeFunction} />
-            </div>
+            <CurrencyInput
+                intlConfig={{ locale: 'en-IN', currency: 'INR' }}
+                allowDecimals
+                placeholder="Debit"
+                decimalSeparator="."
+                id="input-currency-field"
+                name="dAmount"
+                prefix="₹"
+                onValueChange={handleCreditChange}
+                value={cValue}
+                onChange={creditHandler}
+                step={1}
+            />
 
             <div>
                 <button type="button" className="btn btn-danger" onClick={props.deleteFunction}>
@@ -31,4 +85,4 @@ const FormInput = (props) => {
     )
 }
 
-export default FormInput
+export default FormInput;
