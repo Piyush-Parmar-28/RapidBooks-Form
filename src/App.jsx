@@ -7,7 +7,7 @@ import AddBtn_total from './AddBtn_total'
 
 const App = (props) => {
     var
-     [totalD, setTotalD] = useState(0);
+        [totalD, setTotalD] = useState(0);
     var [totalC, setTotalC] = useState(0);
 
     var [formData, setFormData] = useState([
@@ -50,11 +50,17 @@ const App = (props) => {
         setFormData((Data) => {
             return (
                 Data.filter((item) => {
+                    if (item.id == itemID) {
+                        console.log("deleted value: "+ item.dAmount);
+                        setTotalD( totalD-item.dAmount )
+                        setTotalC( totalC-item.cAmount )
+                    }
                     return item.id !== itemID;
                 }
                 )
             )
         })
+
     }
 
     function handleChange(event, itemIndex) {
@@ -76,7 +82,7 @@ const App = (props) => {
         setFormData((Data) => {
 
             Data[itemIndex] = {
-                ...Data[itemIndex], [name]: parseInt(val)
+                ...Data[itemIndex], [name]: val
             }
             setFormData(Data)
 
@@ -121,44 +127,38 @@ const App = (props) => {
     }
 
     return (
-        <main className='blue-bg'>
-            <div className="container">
+        <main className='p-5'>
 
-                <form method="post" className="form-style">
+            <div className=' form-style'>
 
-                    <div>
+                <Header></Header>
 
-                        <Header></Header>
+                {
+                    formData.map((data, index) => {
+                        return (
+                            <FormInput
+                                key={data.id}
+                                Index={index}
+                                deleteFunction={() => { deleteRow(data.id) }}
+                                changeFunction={(event) => { handleChange(event, index) }}
+                                accountValue={data.account}
+                                debitAmount={data.dAmount}
+                                creditAmount={data.cAmount}
+                                addDebitDataFunc={addDebitData}
+                                addCreditDataFunc={addCreditData}
+                            />
+                        )
+                    })
+                }
 
-                        {
-                            formData.map((data, index) => {
-                                return (
-                                    <FormInput
-                                        key={data.id}
-                                        Index={index}
-                                        deleteFunction={() => { deleteRow(data.id) }}
-                                        changeFunction={(event) => { handleChange(event, index) }}
-                                        accountValue={data.account}
-                                        debitAmount={data.dAmount}
-                                        creditAmount={data.cAmount}
-                                        addDebitDataFunc={addDebitData}
-                                        addCreditDataFunc={addCreditData}
-                                    />
-                                )
-                            })
-                        }
-
-                        <AddBtn_total
-                            addRowFunc={addRow}
-                            totalDebit={totalD}
-                            totalCredit={totalC}
-                        />
-
-                    </div>
-
-                </form>
+                <AddBtn_total
+                    addRowFunc={addRow}
+                    totalDebit={totalD}
+                    totalCredit={totalC}
+                />
 
             </div>
+
         </main>
 
     )

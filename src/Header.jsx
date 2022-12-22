@@ -2,24 +2,20 @@ import React from 'react'
 
 const Header = () => {
     return (
-        <div className="d-flex flex-row m-2">
+        <div className="d-flex flex-row justify-content-between m-2">
 
-            <div className="col">
-                <input type="text" className="form-control" placeholder="Select Amount" aria-label="Last name" disabled />
-            </div>
-
-            <div className="col">
-                <input type="text" className="form-control" placeholder="Debit Amount" aria-label="Last name" disabled />
-            </div>
-
-            <div className="col">
-                <input type="text" className="form-control" placeholder="Credit Amount" aria-label="Last name" disabled />
+            <div>
+                <input type="text" className="form-control" placeholder="Select Account" aria-label="Last name" disabled />
             </div>
 
             <div>
-                <button disabled type="button" className="btn btn-danger"><i className="bi bi-trash"></i></button>
+                <input type="text" className="form-control" placeholder="Debit Amount" aria-label="Last name" disabled />
             </div>
 
+            <div>
+                <input type="text" className="form-control" placeholder="Credit Amount" aria-label="Last name" disabled />
+            </div>
+            <div></div>
         </div>
     )
 }

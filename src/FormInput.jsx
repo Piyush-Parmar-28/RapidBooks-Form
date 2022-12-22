@@ -25,19 +25,37 @@ const FormInput = (props) => {
 
     const debitHandler = (event) => {
         var s = (event.target.value)
-        setDValue(parseFloat(s.substring(1)));
-        props.addDebitDataFunc("dAmount", parseFloat(s.substring(1)), props.Index);
+        
+        s= s.replaceAll("₹", "");
+        s= s.replaceAll("₹N", "");
+        s= s.replaceAll("₹Na", "");
+        s= s.replaceAll("₹NaN", "");
+        s= s.replaceAll(",", "");
+
+        if(s.length == 0){
+            s= '0';
+        }
+        props.addDebitDataFunc("dAmount", parseFloat(s), props.Index);
     }
 
     const creditHandler = (event) => {
         var s = (event.target.value)
-        setDValue(parseFloat(s.substring(1)));
-        props.addDebitDataFunc("cAmount", parseFloat(s.substring(1)), props.Index);
+        s= s.replaceAll("₹", "");
+        s= s.replaceAll("₹N", "");
+        s= s.replaceAll("₹Na", "");
+        s= s.replaceAll("₹NaN", "");
+        s= s.replaceAll(",", "");
+
+        if(s.length == 0){
+            s= '0';
+        }
+
+        props.addDebitDataFunc("cAmount", parseFloat(s), props.Index);
     }
 
     return (
-        <div className="d-flex flex-row m-2">
-            <div className="col">
+        <div className="d-flex flex-row justify-content-between m-2">
+            <div>
                 <select className="form-select" aria-label="Default select example" name="account" value={props.accountValue} onChange={props.changeFunction}>
                     <option defaultValue>Select Account</option>
                     <option value="1">One</option>
